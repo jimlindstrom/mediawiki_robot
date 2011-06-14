@@ -1,10 +1,7 @@
 # mediawiki_enhanced_gateway_spec.rb
 
 require 'rubygems'
-require 'yaml'
-require './mediawiki/enhanced_gateway'
-require './mediawiki/page'
-require './familytree/persondb'
+require 'mediawiki_robot/enhanced_gateway'
 
 DO_MESSY_TESTS = false # These tests muck with the 'recent_changes' list and so I try to minimize them
 
@@ -15,15 +12,19 @@ def rand_alphanumeric_str(len)
   (0..len).map{ o[rand(o.length)]  }.join;
 end
 
-describe MediaWiki::EnhancedGateway do
+describe MediawikiRobot::EnhancedGateway do
    
   before(:each) do
 
     # Read configuration
-    config      = YAML.load_file 'config/robot_config_pstore.yml'
-    @mw_opts    = config["mw_opts"]
-    @db_opts    = config["db_opts"]
-    @robot_acct = config["robot_acct"]
+
+    @mw_opts = 
+      {:base_url      => 'http://jimlindstrom.com',
+      :normal_prefix  => '/mediawiki',
+      :special_prefix => '/mediawiki'}
+    @robot_acct =
+      {:user => "robot",
+      :pass  => "robotpass"}
 
     api_url = @mw_opts[:base_url] + @mw_opts[:normal_prefix] + API_SUFFIX
     @gateway = MediaWiki::EnhancedGateway.new(api_url, {:ignorewarnings=>1})
@@ -134,19 +135,6 @@ describe MediaWiki::EnhancedGateway do
     it "returns a list of all the person pages on the mediawiki" do
       @gateway.get_all_pages_in_category(@existing_category).index(@page_in_existing_category).nil?.should == false
       @gateway.get_all_pages_in_category(@existing_category).length.should > 1
-    end
-  end
-  
-  describe "#retrieve_all_people" do
-    it "retrieves all remote pages and adds them to the database" do
-      if DO_MESSY_TESTS
-        all_person_pages = robot.get_all_person_pages
-        @gateway.retrieve_all_people
-        robot = nil
-    
-        person_db = FamilyTree::PersonDB.create(@db_opts)
-        all_person_pages.sort.should == person_db.get_all_people.sort
-      end
     end
   end
   

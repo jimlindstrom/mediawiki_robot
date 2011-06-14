@@ -19,7 +19,5 @@ Gem::Specification.new do |s|
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
 
-  s.add_dependency 'media_wiki'
-  s.add_dependency 'media_wiki/gateway'
-  s.add_dependency 'media_wiki/config'
+  s.add_dependency 'mediawiki-gateway'
 end
