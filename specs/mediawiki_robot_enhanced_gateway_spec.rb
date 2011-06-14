@@ -16,8 +16,6 @@ describe MediawikiRobot::EnhancedGateway do
    
   before(:each) do
 
-    # Read configuration
-
     @mw_opts = 
       {:base_url      => 'http://jimlindstrom.com',
       :normal_prefix  => '/mediawiki',

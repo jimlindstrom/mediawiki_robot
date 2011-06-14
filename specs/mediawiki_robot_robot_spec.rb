@@ -1,8 +1,7 @@
 # mediawiki_robot_spec.rb
 
 require 'rubygems'
-require 'yaml'
-require './mediawiki/robot'
+require 'mediawiki_robot'
 
 def wait_on_condition(max_retries, wait_time, condition)
 
@@ -19,7 +18,7 @@ def rand_alphanumeric_str(len)
   (0..len).map{ o[rand(o.length)]  }.join;
 end
 
-class RobotWithTestHarness < MediaWiki::Robot
+class RobotWithTestHarness < MediawikiRobot::Robot
 
   def initialize(mw_opts)
     super(mw_opts)
@@ -38,15 +37,17 @@ class RobotWithTestHarness < MediaWiki::Robot
 
 end
 
-describe MediaWiki::Robot do
+describe MediawikiRobot::Robot do
   
   before(:each) do
 
-    # Read configuration
-    config      = YAML.load_file 'config/robot_config_pstore.yml'
-    @mw_opts    = config["mw_opts"]
-    #@db_opts    = config["db_opts"]
-    @robot_acct = config["robot_acct"]
+    @mw_opts = 
+      {:base_url      => 'http://jimlindstrom.com',
+      :normal_prefix  => '/mediawiki',
+      :special_prefix => '/mediawiki'}
+    @robot_acct =
+      {:user => "robot",
+      :pass  => "robotpass"}
 
     @robot = RobotWithTestHarness.new(@mw_opts)
   end
