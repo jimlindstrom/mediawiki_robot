@@ -27,7 +27,7 @@ describe MediawikiRobot::EnhancedGateway do
       :pass  => "robotpass"}
 
     api_url = @mw_opts[:base_url] + @mw_opts[:normal_prefix] + API_SUFFIX
-    @gateway = MediaWiki::EnhancedGateway.new(api_url, {:ignorewarnings=>1})
+    @gateway = MediawikiRobot::EnhancedGateway.new(api_url, {:ignorewarnings=>1})
 
     @bogus_user = rand_alphanumeric_str(10)
     @bogus_password = rand_alphanumeric_str(10)
@@ -104,7 +104,7 @@ describe MediawikiRobot::EnhancedGateway do
       end
     end
 
-    it "returns a list of items that are hashes containing 'type', 'title', and 'revision_id' keys" do
+    it "returns a list of items that are hashes containing 'type', 'title', 'timestamp', and 'revision_id' keys" do
       if DO_MESSY_TESTS
         t = Time.new
         starttime = t.getgm
@@ -114,7 +114,7 @@ describe MediawikiRobot::EnhancedGateway do
         @gateway.delete(@nonexistant_page)
       else
         @gateway.login(@robot_acct[:user], @robot_acct[:pass])
-        @gateway.recent_changes(10,nil)[0].keys.should == [:type, :title, :revision_id]
+        @gateway.recent_changes(10,nil)[0].keys.should == [:type, :title, :timestamp, :revision_id]
       end
     end
   end
