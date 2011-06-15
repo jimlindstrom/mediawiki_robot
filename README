@@ -1,0 +1,13 @@
+This is a framework for creating robots for (automated scripts that interact 
+with) Mediawiki-based wikis.  Mediawiki is the software that powers Wikipedia,
+and is very popular.
+
+One common use case is to monitor changes on a wiki, and take some action
+per change (detect spam, enforce policies, record statistics, etc).  
+
+This gem allows you to do that by coding only the change handling method.  The
+work of logging in, monitoring changes, checking page revision numbers and
+whatnot is handled by this gem.
+
+For an example robot built on this framework see: 
+https://github.com/jimlindstrom/FamilyTreeRobot
